@@ -71,6 +71,10 @@ jobs:
           nc -z localhost 9092 && break || sleep 5
         done
 
+    - name: Create Kafka Topic
+      run: |
+        docker exec kafka kafka-topics.sh --create --topic payment_status --bootstrap-server localhost:9092 --partitions 1 --replication-factor 1
+
     - name: Run Migrations
       env:
         DATABASE_URL: postgres://postgres:1234@localhost:5432/local
