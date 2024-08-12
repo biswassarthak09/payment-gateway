@@ -35,10 +35,9 @@ jobs:
         ports:
           - 9092:9092
         env:
-          KAFKA_ADVERTISED_LISTENERS: INSIDE://kafka:9093,OUTSIDE://localhost:9092
-          KAFKA_LISTENER_NAME: INSIDE
-          KAFKA_LISTENERS: INSIDE://0.0.0.0:9093,OUTSIDE://0.0.0.0:9092
-          KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: INSIDE:PLAINTEXT,OUTSIDE:PLAINTEXT
+          KAFKA_ADVERTISED_LISTENERS: OUTSIDE://localhost:9092
+          KAFKA_LISTENERS: OUTSIDE://0.0.0.0:9092
+          KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: OUTSIDE:PLAINTEXT
           KAFKA_LISTENER_SECURITY_PROTOCOL: PLAINTEXT
           KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
 
@@ -59,6 +58,18 @@ jobs:
       run: |
         python -m pip install --upgrade pip
         pip install -r requirements.txt
+
+    - name: Wait for Zookeeper
+      run: |
+        for i in {1..30}; do
+          nc -z localhost 2181 && break || sleep 5
+        done
+
+    - name: Wait for Kafka
+      run: |
+        for i in {1..30}; do
+          nc -z localhost 9092 && break || sleep 5
+        done
 
     - name: Run Migrations
       env:
