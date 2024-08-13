@@ -149,5 +149,6 @@ PAYTABS_API_KEY = "S6J9NBJT2N-JJHHM22MGM-L6LZHMK2KN"
 PAYTABS_CLIENT_KEY = "CKK2MN-7V6V66-HHNMMN-HBTDMK"
 
 
-KAFKA_BROKER_URL = 'localhost:9092'  # Default Kafka broker address
+# KAFKA_BROKER_URL = 'localhost:9092'  # Default Kafka broker address
+KAFKA_BROKER_URL = 'kafka:9092'
 KAFKA_TOPIC_NAME = 'payment_status'
